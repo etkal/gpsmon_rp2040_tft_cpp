@@ -41,6 +41,21 @@ add_compile_options(-Wall
         -Wno-maybe-uninitialized
         )
 
+
+# Power status
+add_library(power_status_adc INTERFACE)
+target_sources(power_status_adc INTERFACE
+        ${CMAKE_CURRENT_LIST_DIR}/src/power_status.cpp
+        )
+target_include_directories(power_status_adc INTERFACE
+        ${CMAKE_CURRENT_LIST_DIR}/src
+        )
+target_link_libraries(power_status_adc INTERFACE
+        hardware_adc
+        hardware_gpio
+        )
+
+
 add_executable(gpsmon_tft)
 pico_enable_stdio_usb(${PROJECT_NAME} 1)
 pico_enable_stdio_uart(${PROJECT_NAME} 0)
@@ -67,14 +82,15 @@ if (PICO_BOARD STREQUAL pico_w)
                         hardware_spi
                         pico_cyw43_arch_none
                         pico_cyw43_arch_lwip_threadsafe_background
-                        )
+                        power_status_adc)
 else()
   target_link_libraries(gpsmon_tft
                         pico_stdlib
                         pico_stdio
                         hardware_gpio
                         hardware_pio
-                        hardware_spi)
+                        hardware_spi
+                        power_status_adc)
 endif()
 
 # create map/bin/hex/uf2 file in addition to ELF.

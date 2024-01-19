@@ -23,13 +23,16 @@
 // This implementation uses TCPIP to connect to a gpsd server instead of a local GPS module.
 
 #include <iostream>
-#include "gps_tft.h"
+#include <pico/stdlib.h>
+#include "hardware/adc.h"
 
 #if defined(RASPBERRYPI_PICO_W)
 #include "pico/cyw43_arch.h"
 #else
 #error PICO W required
 #endif
+
+#include "gps_tft.h"
 
 #if defined(DISPLAY_PICO_RESTOUCH) // Waveshare Pico-ResTouch-LCD-3.5
 #define SPI_DEVICE spi1
@@ -79,6 +82,7 @@
 int main()
 {
     stdio_init_all();
+    adc_init();
 
     // Set up the TFT display
     spi_init(SPI_DEVICE, 80000000);
