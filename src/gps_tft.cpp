@@ -20,6 +20,7 @@
 #include "gps_tft.h"
 #include "power_status.h"
 
+#if !defined(NDEBUG)
 #include <malloc.h>
 static uint32_t getTotalHeap()
 {
@@ -31,6 +32,7 @@ static uint32_t getFreeHeap()
     struct mallinfo m = mallinfo();
     return getTotalHeap() - m.uordblks;
 }
+#endif
 
 #define SAT_ICON_RADIUS 4
 
@@ -181,7 +183,9 @@ void GPS_TFT::updateUI(GPSData::Shared spGPSData)
 
     m_spGPSData.reset();
 
+#if !defined(NDEBUG)
     std::cout << "Total Heap: " << getTotalHeap() << "  Free Heap: " << getFreeHeap() << std::endl;
+#endif
 }
 
 void GPS_TFT::drawSatGrid(uint xCenter, uint yCenter, uint radius, uint nRings)
