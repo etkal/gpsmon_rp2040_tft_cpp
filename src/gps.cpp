@@ -26,12 +26,14 @@
 #include <iostream>
 #include <iomanip>
 
-#include "gps.h"
 #include <pico/sync.h>
 #include "pico/cyw43_arch.h"
 
 #include "lwip/pbuf.h"
 #include "lwip/tcp.h"
+
+#include "gps.h"
+#include "network_info.h"
 
 #define POLL_TIME_SEC 5
 #define GPSD_INIT_STRING "?WATCH={\"nmea\":true}\r\n"
@@ -72,8 +74,8 @@ void GPS::SetGpsDataCallback(void* pCtx, gpsDataCallback pCB)
 void GPS::Run()
 {
     // Set up connection to gpsd server
-    ::ip4addr_aton(GPSD_TCP_SERVER, &m_remoteAddr);
-    std::cout << "Connecting to " << ip4addr_ntoa(&m_remoteAddr) << " port " << GPSD_TCP_PORT << std::endl;
+    ::ip4addr_aton(g_szGpsdIpAddress, &m_remoteAddr);
+    std::cout << "Connecting to " << ip4addr_ntoa(&m_remoteAddr) << " port " << g_szGpsdTcpPort << std::endl;
     m_pTcpPcb = tcp_new_ip_type(IP_GET_TYPE(m_remoteAddr));
 
     ::tcp_arg(m_pTcpPcb, this);
@@ -84,7 +86,7 @@ void GPS::Run()
     tcp_nagle_disable(m_pTcpPcb);
 
     ::cyw43_arch_lwip_begin();
-    err_t err = ::tcp_connect(m_pTcpPcb, &m_remoteAddr, GPSD_TCP_PORT, TCP_connected);
+    err_t err = ::tcp_connect(m_pTcpPcb, &m_remoteAddr, g_szGpsdTcpPort, TCP_connected);
     ::cyw43_arch_lwip_end();
 
     if (err != ERR_OK)

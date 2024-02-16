@@ -14,16 +14,6 @@ add_compile_definitions(DISPLAY_QUADRANTS=4)
 # Set the following if using Waveshare Pico-ResTouch-LCD for GPIO assignments
 add_compile_definitions(DISPLAY_PICO_RESTOUCH)
 
-# SSID info from environment -- specify here or use environment variable
-add_compile_definitions(GPSD_WIFI_SSID="$(WIFI_SSID)")
-add_compile_definitions(GPSD_WIFI_PASSWORD="$(WIFI_PASSWORD)")
-
-# gpsd server and port to use
-add_compile_definitions(GPSD_TCP_SERVER="10.0.1.62")
-add_compile_definitions(GPSD_TCP_PORT=2947)
-# GMT Offset for clock display
-add_compile_definitions(GPSD_GMT_OFFSET=-5.0)
-
 # initialize the SDK based on PICO_SDK_PATH
 # note: this must happen before project()
 include(pico_sdk_import.cmake)

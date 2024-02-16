@@ -33,6 +33,7 @@
 #endif
 
 #include "gps_tft.h"
+#include "network_info.h"
 
 #if defined(DISPLAY_PICO_RESTOUCH) // Waveshare Pico-ResTouch-LCD-3.5
 #define SPI_DEVICE spi1
@@ -147,7 +148,7 @@ int main()
 #endif
 
     // Create the GPS_TFT display object
-    GPS_TFT::Shared spDevice = std::make_shared<GPS_TFT>(spDisplay, spGPS, spLED, GPSD_GMT_OFFSET);
+    GPS_TFT::Shared spDevice = std::make_shared<GPS_TFT>(spDisplay, spGPS, spLED, g_fGmtOffset);
 
     spDevice->Initialize();
 
@@ -157,14 +158,14 @@ int main()
     while (true)
     {
         std::cout << "Connecting to wifi..." << std::endl;
-        if (cyw43_arch_wifi_connect_timeout_ms(GPSD_WIFI_SSID, GPSD_WIFI_PASSWORD, CYW43_AUTH_WPA2_AES_PSK, 5000))
+        if (cyw43_arch_wifi_connect_timeout_ms(g_szWifiSsid, g_szWifiPassword, CYW43_AUTH_WPA2_AES_PSK, 5000))
         {
             std::cout << "Failed to connect to wifi" << std::endl;
             continue;
         }
         break;
     }
-    std::cout << "Connected to " << GPSD_WIFI_SSID << std::endl;
+    std::cout << "Connected to " << g_szWifiSsid << std::endl;
 
     // Run the show
     spDevice->Run();

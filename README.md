@@ -20,9 +20,9 @@ Network gpsd client in C++ using RP2040 Pico-W with TFT display
 
   In main.cpp the required abstraction objects are created, and then the application reads NMEA 0183 sentences from a gpsd server over the network.  Basic network connectivity and data transfer is modeled after the sample code in the C++ SDK using lwIP.
 
-  In the high level CMakeLists.txt some hardware and network specification is required; you can hardcode or use environment variables for the WiFi network credentials and gpsd server information.
+  The header file network_info.h contains (or includes) your WiFi network credentials and gpsd server information.
 
-  The received MNEA data is correlated and displayed in textual and graphical form on the display.  For the TFT it displays the latitude, longitude, altitude, GMT time and an indication of the number of satellites and fix type.  A graphical representation of the satellite positions is displayed, as well as a satellite signal strength bar graph and a clock.
+  The received NMEA 0183 data is correlated and displayed in textual and graphical form on the display.  For the TFT it displays the latitude, longitude, altitude, GMT time and an indication of the number of satellites and fix type.  A graphical representation of the satellite positions is displayed, as well as a satellite signal strength bar graph and a clock.
 
   An LED blinks to indicate the presence of a location fix.  If a WS2812 LED is available, colors are used to indicate additional information, e.g. blink red for no fix, green for a positive fix; customization may be needed for the specific GPS module and LED.
 
